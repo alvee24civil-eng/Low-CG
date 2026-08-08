@@ -253,7 +253,7 @@
     ⚠ Firebase isn't configured yet. Open this file's source and paste your firebaseConfig into the FIREBASE_CONFIG block near the top of the script — see the comments there.
   </div>
   <header>
-    <h1>মেস খাতা</h1>
+    <h1>Low CG </h1>
     <div class="sub">cut the CHUDLING and PAY up</div>
     <div class="names">ALVEE · SAIKAT · SALMAN · ABTAHI · EMON · TANVIR</div>
   </header>
@@ -365,7 +365,7 @@
     </table>
     <div id="emptyMsg" class="empty" style="display:none;">No entries yet. Add the first bill above.</div>
   </section>
-    <footer>coded bluntly by Jinxy</footer>
+    <footer>coded bluntly by jinxy</footer>
 </div>
 
 
@@ -412,7 +412,7 @@ function initFirebase(){
     firebase.initializeApp(FIREBASE_CONFIG);
     db = firebase.database();
     dbReady = true;
-    // Live listener — fires on load and again whenever anyone adds/removes an entry.
+
     db.ref('expenses').on('value', snapshot => {
       const val = snapshot.val() || {};
       expenses = Object.keys(val).map(id => ({ id, ...val[id] }));
