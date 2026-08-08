@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>মেস খাতা — Mess Ledger</title>
+<title>LOW CG</title>
 <style>
   :root{
     --paper: #eef2e9;
@@ -254,8 +254,8 @@
   </div>
   <header>
     <h1>মেস খাতা</h1>
-    <div class="sub">Shared Mess Ledger — 6 people, one pot</div>
-    <div class="names">EMON · SAIKAT · SALMAN · ABTAHI · ALVE · TANVIR</div>
+    <div class="sub">cut the CHUDLING and PAY up</div>
+    <div class="names">ALVEE · SAIKAT · SALMAN · ABTAHI · EMON · TANVIR</div>
   </header>
 
   <section>
@@ -289,13 +289,13 @@
       <div>
         <label>Paid by</label>
         <select id="f-paidby">
-          <option>Emon</option>
+          <option>Alvee</option>
           <option>Saikat</option>
           <option>Salman</option>
           <option>Abtahi</option>
-          <option>Alve</option>
+          <option>Emon</option>
           <option>Tanvir</option>
-          <option value="All">All (split on the spot)</option>
+          <option value="All">Split on the spot</option>
         </select>
       </div>
       <div>
@@ -320,7 +320,7 @@
 
   <section>
     <h2>Record a Settlement</h2>
-    <div class="status" style="margin-bottom:10px;">When someone actually pays back what they owe (cash, bKash, etc.), log it here so their balance updates.</div>
+    <div class="status" style="margin-bottom:10px;">When someone  pays back what they owe,log it here.</div>
     <form id="settleForm" onsubmit="return handleSettleSubmit(event)" class="settleform">
       <div>
         <label>From (who's paying)</label>
@@ -329,7 +329,7 @@
           <option>Saikat</option>
           <option>Salman</option>
           <option>Abtahi</option>
-          <option>Alve</option>
+          <option>Alvee</option>
           <option>Tanvir</option>
         </select>
       </div>
@@ -365,28 +365,14 @@
     </table>
     <div id="emptyMsg" class="empty" style="display:none;">No entries yet. Add the first bill above.</div>
   </section>
+    <footer>coded bluntly by Jinxy</footer>
 </div>
 
-<!-- Firebase (free Realtime Database) -->
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
 <script>
-/* ============================================================
-   PASTE YOUR FIREBASE CONFIG HERE.
-   Get this from: Firebase console > Project settings > General
-   > Your apps > Web app > SDK setup and configuration.
-   It looks like:
-   {
-     apiKey: "AIza...",
-     authDomain: "your-project.firebaseapp.com",
-     databaseURL: "https://your-project-default-rtdb.firebaseio.com",
-     projectId: "your-project",
-     storageBucket: "your-project.appspot.com",
-     messagingSenderId: "...",
-     appId: "..."
-   }
-   ============================================================ */
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyAAZY9x3NJeyxGwnAM--bHYdvasKrXTLEo",
   authDomain: "low-cg.firebaseapp.com",
@@ -550,8 +536,6 @@ function computeBalances(){
   MEMBERS.forEach(m => owed[m] = share);
   const net = {};
   MEMBERS.forEach(m => net[m] = paid[m] - owed[m]);
-  // A settlement moves money directly between two people, outside the bill pot —
-  // it doesn't get split 6 ways, it just clears debt between those two.
   settlements.forEach(s => {
     if(net[s.from] !== undefined) net[s.from] += s.amount;
     if(net[s.to] !== undefined) net[s.to] -= s.amount;
@@ -584,7 +568,7 @@ function simplifySettlements(net){
 function render(){
   const net = computeBalances();
 
-  // balances
+
   const balEl = document.getElementById('balances');
   balEl.innerHTML = '';
   MEMBERS.forEach(m => {
@@ -597,8 +581,6 @@ function render(){
     div.innerHTML = `<div class="bname">${m}</div><div class="btag">${tag}</div><div class="bamt ${cls}">${amtStr}</div>`;
     balEl.appendChild(div);
   });
-
-  // settle up
   const settleEl = document.getElementById('settle');
   const txns = simplifySettlements(net);
   settleEl.innerHTML = '';
@@ -613,7 +595,6 @@ function render(){
     });
   }
 
-  // settlement log
   const settleLogEl = document.getElementById('settleLog');
   settleLogEl.innerHTML = '';
   const sortedSettles = [...settlements].sort((a,b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
@@ -623,8 +604,6 @@ function render(){
     div.innerHTML = `<span>${s.date} — <b>${s.from}</b> paid <b>${s.to}</b> ৳${s.amount}</span><button class="delbtn" onclick="deleteSettlement('${s.id}')">remove</button>`;
     settleLogEl.appendChild(div);
   });
-
-  // history
   const histEl = document.getElementById('history');
   histEl.innerHTML = '';
   const sorted = [...expenses].sort((a,b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
